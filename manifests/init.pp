@@ -57,20 +57,17 @@ class backuppc::client {
 		ensure => installed
 	}
 
-	file { "/var/local/abackup/":
-		ensure => directory, mode => 700,
-		owner => abackup, group => nogroup
-	}
-
-	file { "/var/local/abackup/.ssh":
-		ensure => directory, mode => 700,
-		owner => abackup, group => nogroup
-	}
-
-	file { "/var/local/abackup/.ssh/authorized_keys":
-		ensure => present, mode => 600,
-		owner => abackup, group => nogroup,
-		source => "puppet://$servername/files/abackup_authorized_key"
+	file {
+		"/var/local/abackup/":
+			ensure => directory, mode => 700,
+			owner => abackup, group => nogroup;
+		"/var/local/abackup/.ssh":
+			ensure => directory, mode => 700,
+			owner => abackup, group => nogroup;
+		"/var/local/abackup/.ssh/authorized_keys":
+			ensure => present, mode => 600,
+			owner => abackup, group => nogroup,
+			source => "puppet://$servername/files/abackup_authorized_key";
 	}
 
 	user { "abackup":

@@ -1,0 +1,67 @@
+Overview
+========
+
+This module manages the BackupPC backup software on the server and on the clients.
+
+Server
+------
+
+On the server, apache2 is installed to host the management CGI application and
+ssh to access the clients.
+
+Default exclude list:
+
+	* /proc and /sys: These contain dangerous files which should or can not
+	  be backupped.
+	* /mnt and /media: Common mountpoints for external or temporary media.
+	  Backups of these should be made by design, not by accident
+	* /backup: local, permanent mountpoint for backup media.
+	* /var/cache/apt/archives: 80/20 of excluding /var/cache
+
+Clients
+-------
+
+On clients, a ssh server and rsync are installed. Sudo has to be installed (see todo).
+
+A user abackup is created. With an authorized_key, the server can access the
+client, using this user. A sudoers entry enables priviledge escalation for
+backup and direct restore from the management interface.
+
+Classes
+=======
+
+There are two classes, backuppc::server and backuppc::client, which have to be
+included on the server and the client repectively.
+
+
+Limitations
+===========
+
+Hosts that should be backupped have to be added manually to /etc/backuppc/hosts
+on the server.
+
+Since the backuppc server process terminates all running backups when being
+restarted and recognizes changes in the configuration automatically, the
+service is not managed with puppet. 
+
+TODO
+====
+
+Rename the VirtualHost from $fqdn to backuppc.$domain.
+
+Enable SSL.
+
+Install a Redirect from https://backuppc.$domain/ to the backuppc CGI. Care has
+to be taken to not shadow other sites.
+
+Fix/Remove the string-testing stuff in backuppc::setting.
+
+Manage Samba and Tar clients.
+
+Expose exclude list as array variable.
+
+Exclude /var/cache completely?
+
+Create sudo class and use it here and in dbp.
+
+Collect clients instead of manual maintenance of /etc/backuppc/hosts.
