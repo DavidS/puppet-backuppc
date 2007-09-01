@@ -81,7 +81,7 @@ class backuppc::client {
 		gid => nogroup
 	}
 
-	append_if_no_such_line { abackup_sudoers:
+	line { abackup_sudoers:
 		file => "/etc/sudoers",
 		line => "abackup ALL=(ALL) NOPASSWD: /usr/bin/rsync --server --sender --numeric-ids --perms --owner --group --devices --links --times --block-size=2048 --recursive -D *",
 		require => Package[sudo]
