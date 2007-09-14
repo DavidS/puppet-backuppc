@@ -9,7 +9,6 @@ define backuppc::setting ($val) {
 	# (#...)? for idempotency and not killing comments at end of line
 	$p2='\}\s*=\s*(?!'
 	$p3=')[^;]*;.*$'
-	$p = template("backuppc_set_pattern.erb")
 
 	$r1='\$Conf{'
 
@@ -21,12 +20,17 @@ define backuppc::setting ($val) {
 	}
 }
 
+class rsync { 
+	package { rsync: ensure = installed }
+}
+
 class backuppc::server {
 	include apache2::no_default_site
 	include ssh::client
+	include rsync
 
-	package { [ backuppc, libfile-rsyncp-perl, rsync]:
-		ensure => present
+	package { [ backuppc, libfile-rsyncp-perl]:
+		ensure => installed
 	}
 
 	file { "/var/lib/backuppc/.ssh":
@@ -48,17 +52,16 @@ class backuppc::server {
 	# wake up really often to catch intermittently connected hosts,
 	# wakeup first thing in the morning to do _nightly without disturbing too much
 	backuppc::setting { WakeupSchedule: val => '[ 4.25, 0..23, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5 ]' }
+
 	# TODO: collect backuppc_client definitions into hosts file
+	File <<||>>
 }
 
 class backuppc::client {
 
 	# backuppc connects via SSH, therefore we need a ssh server
 	include ssh::server
-
-	package { rsync: 
-		ensure => installed
-	}
+	include rsync
 
 	file {
 		"/var/local/abackup/":
@@ -70,7 +73,7 @@ class backuppc::client {
 		"/var/local/abackup/.ssh/authorized_keys":
 			ensure => present, mode => 600,
 			owner => abackup, group => nogroup,
-			source => "puppet://$servername/files/abackup_authorized_key";
+			source => "puppet://$servername/backuppc/abackup_authorized_key";
 	}
 
 	user { "abackup":
@@ -88,6 +91,8 @@ class backuppc::client {
 	}
 
 	# TODO: export hosts file
-
+	@@file { "/var/lib/puppet/modules/backuppc/$hostname":
+		ensure => present,
+	}
 }
 
