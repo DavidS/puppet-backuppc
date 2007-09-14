@@ -21,7 +21,7 @@ define backuppc::setting ($val) {
 }
 
 class rsync { 
-	package { rsync: ensure = installed }
+	package { rsync: ensure => installed }
 }
 
 class backuppc::server {
