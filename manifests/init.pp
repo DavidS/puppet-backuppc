@@ -2,6 +2,7 @@
 # Copyright (C) 2007 David Schmitt <david@schmitt.edv-bus.at>
 # See LICENSE for the full license granted to you.
 
+modules_dir { backuppc: }
 
 define backuppc::setting ($val) {
 
