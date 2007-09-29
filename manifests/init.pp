@@ -55,7 +55,8 @@ class backuppc::server {
 	backuppc::setting { WakeupSchedule: val => '[ 4.25, 0..23, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5 ]' }
 
 	# TODO: collect backuppc_client definitions into hosts file
-	File <<||>>
+	#File <<| tag == "backuppc::client" |>>
+	File <<| |>>
 }
 
 class backuppc::client {
