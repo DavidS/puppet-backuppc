@@ -45,7 +45,11 @@ class backuppc::server {
 		notify => Exec["reload-apache2"]
 	}
 
-	apache2::site { backuppc: ensure => present }
+	apache2::site {
+		backuppc:
+			ensure => present,
+			content => template("backuppc/vhost.conf"),
+	}
 
 	backuppc::setting { PingMaxMsec: val => "40"; }
 	backuppc::setting { FullKeepCnt: val => "3"; }
