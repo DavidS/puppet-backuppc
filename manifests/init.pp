@@ -39,12 +39,6 @@ class backuppc::server {
 		owner => backuppc, group => backuppc
 	}
 
-	file { "/etc/apache2/sites-available/backuppc":
-		content => template("backuppc/vhost.conf"),
-		mode => 0644, owner => root, group => root,
-		notify => Exec["reload-apache2"]
-	}
-
 	apache2::site {
 		backuppc:
 			ensure => present,
