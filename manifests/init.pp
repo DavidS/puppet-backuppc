@@ -34,12 +34,14 @@ class backuppc::server {
 		ensure => installed
 	}
 
-	file { "/var/lib/backuppc/.ssh":
-		ensure => directory, mode => 0700,
-		owner => backuppc, group => backuppc
+	file {
+		"/var/lib/backuppc/.ssh":
+			ensure => directory, mode => 0700,
+			owner => backuppc, group => backuppc;
+		# ssh caches the changing ssh host keys here
+		"/var/lib/backuppc/.ssh/known_hosts":
+			ensure => absent;
 	}
-
-	file { "/var/lib/backuppc/.ssh/known_hosts": ensure => absent }
 
 	apache2::site {
 		backuppc:
