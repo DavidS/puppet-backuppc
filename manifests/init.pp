@@ -39,6 +39,8 @@ class backuppc::server {
 		owner => backuppc, group => backuppc
 	}
 
+	file { "/var/lib/backuppc/.ssh/known_hosts": ensure => absent }
+
 	apache2::site {
 		backuppc:
 			ensure => present,
