@@ -26,7 +26,7 @@ class rsync {
 }
 
 class backuppc::server {
-	include apache2::no_default_site
+	include apache
 	include ssh::client
 	include rsync
 
@@ -43,7 +43,7 @@ class backuppc::server {
 			ensure => absent;
 	}
 
-	apache2::site {
+	apache::site {
 		backuppc:
 			ensure => present,
 			content => template("backuppc/vhost.conf"),
