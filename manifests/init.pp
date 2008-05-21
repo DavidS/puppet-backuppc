@@ -31,7 +31,25 @@ class backuppc::server {
 	include rsync
 
 	package { [ backuppc, libfile-rsyncp-perl]:
-		ensure => installed
+		ensure => installed,
+		require => [ User['backuppc'], Group['backuppc'] ]
+	}
+
+	user {
+		'backuppc':
+			uid => 207,
+			comment => 'BackupPC',
+			home => '/var/lib/backuppc',
+			password => '!',
+			gid => 207,
+			ensure => 'present',
+			shell => '/bin/sh'
+	}
+
+	group {
+		'backuppc':
+			gid => '207',
+			ensure => 'present'
 	}
 
 	file {
@@ -39,6 +57,7 @@ class backuppc::server {
 			ensure => directory, mode => 0700,
 			owner => backuppc, group => backuppc;
 		# ssh caches the changing ssh host keys here
+		# prevent this
 		"/var/lib/backuppc/.ssh/known_hosts":
 			ensure => absent;
 	}
