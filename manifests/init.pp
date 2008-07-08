@@ -60,6 +60,9 @@ class backuppc::server {
 		# prevent this
 		"/var/lib/backuppc/.ssh/known_hosts":
 			ensure => absent;
+		"/usr/share/backuppc/cgi-bin/index.cgi":
+			ensure => present, mode => 4755,
+			owner => backuppc, group => backuppc;
 	}
 
 	apache::site {
