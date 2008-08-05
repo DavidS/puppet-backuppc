@@ -71,12 +71,14 @@ class backuppc::server {
 			content => template("backuppc/vhost.conf"),
 	}
 
-	backuppc::setting { PingMaxMsec: val => "40"; }
-	backuppc::setting { FullKeepCnt: val => "3"; }
-	backuppc::setting { BackupFilesExclude: val => '[ "\/proc", "\/sys", "\/backup", "\/media", "\/mnt", "\/var\/cache\/apt\/archives", "\/var\/lib\/vservers\/.hash" ]' }
-	# wake up really often to catch intermittently connected hosts,
-	# wakeup first thing in the morning to do _nightly without disturbing too much
-	backuppc::setting { WakeupSchedule: val => '[ 4.25, 0..23, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5 ]' }
+	backuppc::setting {
+		PingMaxMsec: val => "40";
+		FullKeepCnt: val => "3";
+		BackupFilesExclude: val => '[ "\/proc", "\/sys", "\/backup", "\/media", "\/mnt", "\/var\/cache\/apt\/archives", "\/var\/lib\/vservers\/.hash" ]';
+		# wake up really often to catch intermittently connected hosts, wakeup
+		# first thing in the morning to do _nightly without disturbing too much
+		WakeupSchedule: val => '[ 4.25, 0..23, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5 ]'
+	}
 
 	File <<| tag == "backuppc" |>>
 }
@@ -120,8 +122,9 @@ class backuppc::client {
 	}
 
 	# TODO: export hosts file
-	@@file { "/var/lib/puppet/modules/backuppc/$hostname":
+	@@file { "/var/lib/puppet/modules/backuppc/$fqdn":
 		ensure => present,
+		content => template("backuppc/ssh_config.erb"),
 		tag => 'backuppc'
 	}
 }

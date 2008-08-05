@@ -1,0 +1,13 @@
+
+Host <%= fqdn %>
+       Port <%= (ssh_port == "") ? 22 : ssh_port %>
+       IdentityFile /var/lib/backuppc/.ssh/id_rsa
+       ChallengeResponseAuthentication no
+       PasswordAuthentication no
+       KbdInteractiveDevices no
+       ForwardAgent no
+       ForwardX11 no
+       ConnectTimeout 10
+       Ciphers blowfish-cbc
+       Compression no
+
