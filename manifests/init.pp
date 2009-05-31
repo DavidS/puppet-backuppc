@@ -2,7 +2,6 @@
 # Copyright (C) 2007 David Schmitt <david@schmitt.edv-bus.at>
 # See LICENSE for the full license granted to you.
 
-modules_dir { backuppc: }
 
 define backuppc::setting ($val) {
 
@@ -29,6 +28,8 @@ class backuppc::server {
 	include apache
 	include ssh::client
 	include rsync
+
+	module_dir { backuppc: }
 
 	package { [ backuppc, libfile-rsyncp-perl]:
 		ensure => installed,
@@ -122,7 +123,7 @@ class backuppc::client {
 	}
 
 	# TODO: export hosts file
-	@@file { "/var/lib/puppet/modules/backuppc/$fqdn":
+	@@file { "${module_dir_path}/backuppc/${fqdn}":
 		ensure => present,
 		content => template("backuppc/ssh_config.erb"),
 		tag => 'backuppc'
