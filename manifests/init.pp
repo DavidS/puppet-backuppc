@@ -100,7 +100,7 @@ class backuppc::client {
 		"/var/local/abackup/.ssh/authorized_keys":
 			ensure => present, mode => 600,
 			owner => abackup, group => nogroup,
-			source => "puppet://$servername/backuppc/abackup_authorized_key";
+			source => "puppet:///modules/backuppc/abackup_authorized_key";
 	}
 
 	user { "abackup":
