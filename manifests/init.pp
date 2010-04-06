@@ -61,6 +61,10 @@ class backuppc::server {
 		# prevent this
 		"/var/lib/backuppc/.ssh/known_hosts":
 			ensure => absent;
+		"/var/lib/backuppc/.ssh/abackup.private":
+			ensure => present, mode => 0600,
+			owner => backuppc, group => backuppc,
+			content => file("/etc/puppet/secrets/abackup.private");
 		"/usr/share/backuppc/cgi-bin/index.cgi":
 			ensure => present, mode => 4755,
 			owner => backuppc, group => backuppc;
@@ -100,7 +104,7 @@ class backuppc::client {
 		"/var/local/abackup/.ssh/authorized_keys":
 			ensure => present, mode => 600,
 			owner => abackup, group => nogroup,
-			source => "puppet:///modules/backuppc/abackup_authorized_key";
+			content => file("/etc/puppet/secrets/abackup.pub");
 	}
 
 	user { "abackup":

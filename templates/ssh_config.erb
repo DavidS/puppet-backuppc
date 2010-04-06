@@ -1,7 +1,7 @@
 
 Host <%= fqdn %>
        Port <%= (ssh_port == "") ? 22 : ssh_port %>
-       IdentityFile /var/lib/backuppc/.ssh/id_rsa
+       IdentityFile /var/lib/backuppc/.ssh/abackup.private
        ChallengeResponseAuthentication no
        PasswordAuthentication no
        KbdInteractiveDevices no
