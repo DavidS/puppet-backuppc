@@ -67,7 +67,8 @@ class backuppc::server {
 			content => file("/etc/puppet/secrets/abackup.private");
 		"/usr/share/backuppc/cgi-bin/index.cgi":
 			ensure => present, mode => 4755,
-			owner => backuppc, group => backuppc;
+			owner => backuppc, group => backuppc,
+			require => Package['backuppc'];
 	}
 
 	apache::site {
