@@ -119,7 +119,7 @@ class backuppc::client {
 	line {
 		abackup_sudoers:
 			file => "/etc/sudoers",
-			line => "abackup ALL=(ALL) NOPASSWD: /usr/bin/rsync --server --sender --numeric-ids --perms --owner --group --devices --links --times --block-size=2048 --recursive -D *",
+			line => "abackup ALL=(ALL) NOPASSWD: /usr/bin/rsync --server --sender *",
 			require => Package[sudo];
 		abackup_sudoers_tar:
 			file => "/etc/sudoers",
